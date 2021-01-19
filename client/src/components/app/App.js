@@ -4,10 +4,14 @@ import Login from "../../pages/auth/login/Login";
 import { Switch, Route } from "react-router-dom";
 
 import "./app.style.scss";
+import Header from "../menu/Header";
 
 const App = () => {
     return (
-        <div className="App">
+        <>
+
+            <Header/>
+
             <Switch>
 
                 <Route path="/" exact component={Home} />
@@ -16,7 +20,7 @@ const App = () => {
 
 
             </Switch>
-        </div>
+        </>
     );
 }
 
