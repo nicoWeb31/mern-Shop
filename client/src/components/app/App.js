@@ -5,8 +5,7 @@ import { Switch, Route } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import { Provider } from "react-redux";
-import store from "../../redux/store";
+
 
 import "./app.style.scss";
 import Header from "../menu/Header";
@@ -15,7 +14,7 @@ import RegisterComplete from "../../pages/auth/registerComplete/RegisterComplete
 const App = () => {
     return (
         <>
-            <Provider store={store}>
+
                 <Header />
 
                 <Switch>
@@ -29,7 +28,7 @@ const App = () => {
                     />
                 </Switch>
                 <ToastContainer />
-            </Provider>
+
         </>
     );
 };
