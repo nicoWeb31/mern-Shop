@@ -1,11 +1,7 @@
-import React, { useState, useEffect } from "react";
-import { auth } from "../../../firebase";
-import { toast } from "react-toastify";
-import { Button } from "antd";
-import { MailOutlined, GoogleOutlined } from "@ant-design/icons";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { loginUser } from "../../../redux/actions/authAction";
-import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+import { auth } from "../../../firebase";
 
 const ForgotPassword = ({ history }) => {
     const [email, setEmail] = useState("");
