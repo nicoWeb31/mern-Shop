@@ -1,9 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { auth } from "../../../firebase";
 import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
 
-const Register = () => {
+const Register = ({ history }) => {
     const [email, setEmail] = useState("");
+
+    const userAuhtState = useSelector((state) => state.auth);
+
+    useEffect(() => {
+        if (userAuhtState && userAuhtState.token) history.push("/");
+    }, [userAuhtState]);
 
     const HandleSubmit = async (e) => {
         e.preventDefault();
@@ -40,7 +47,7 @@ const Register = () => {
                         placeholder="Your Email"
                     />
                 </div>
-                <br/>
+                <br />
                 <button className="btn btn-raised" type="submit">
                     register
                 </button>
