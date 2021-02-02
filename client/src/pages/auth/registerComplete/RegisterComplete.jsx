@@ -1,11 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { auth } from "../../../firebase";
 import { toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
+import { loginUser } from "../../../redux/actions/authAction";
+import { createOrUpadateUser } from '../../../function/auth';
+
 
 
 const RegisterComplete = ({ history }) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+
+    const dispatch = useDispatch();
+
+    const userAuhtState = useSelector((state) => state.auth);
 
     useEffect(() => {
         const email = window.localStorage.getItem("emailForRegistration");
@@ -15,11 +23,13 @@ const RegisterComplete = ({ history }) => {
     const HandleSubmit = async (e) => {
         e.preventDefault();
 
-        if(!email || !password){
-            return toast.error('Email and password is required !')
+        if (!email || !password) {
+            return toast.error("Email and password is required !");
         }
-        if(password.length < 6){
-            return toast.error('Password too short he must be at least 6 characters')
+        if (password.length < 6) {
+            return toast.error(
+                "Password too short he must be at least 6 characters"
+            );
         }
 
         try {
@@ -27,27 +37,41 @@ const RegisterComplete = ({ history }) => {
                 email,
                 window.location.href
             );
-            
-            if(result.user.emailVerified){
-                //delete storage 
+
+            if (result.user.emailVerified) {
+                //delete storage
                 window.localStorage.removeItem("emailForRegistration");
-                //get user id token 
-                let user  = auth.currentUser
+                //get user id token
+                let user = auth.currentUser;
                 await user.updatePassword(password);
-                const idTokenResult = await user.getIdTokenResult()
+                const idTokenResult = await user.getIdTokenResult();
                 //redux store
                 //TODO:
+                try {
+                    const result = await createOrUpadateUser(idTokenResult.token);
+                    console.log(
+                        "🚀 ~ file: Login.jsx ~ line 53 ~ HandleSubmit ~ result",
+                        result
+                    );
+                    dispatch(
+                        loginUser({
+                            name: result.data.user.name,
+                            email: result.data.user.email,
+                            token: idTokenResult.token,
+                            role: result.data.user.role,
+                            _id: result.data.user._id,
+                        })
+                    );
+                } catch (error) {}
+
                 //console.log("user",user,'idTokenResult',idTokenResult);
                 //redirect
-                history.push('/')
+                history.push("/");
             }
-
-
         } catch (error) {
-        toast.error(error.message);
-            
+            toast.error(error.message);
         }
-    }
+    };
 
     //____________________form_________________________________
     const registerFormComplete = () => {

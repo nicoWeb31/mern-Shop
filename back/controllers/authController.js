@@ -20,7 +20,7 @@ export const createOrUpdateUser = async (req, res) => {
         res.status(201).json({
             status: "success",
             message: "user create successfully",
-            newUser,
+            user:newUser,
         })
     }
 };

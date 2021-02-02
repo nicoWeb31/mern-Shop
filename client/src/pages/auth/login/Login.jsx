@@ -6,21 +6,8 @@ import { MailOutlined, GoogleOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../../../redux/actions/authAction";
 import { Link } from "react-router-dom";
-import axios from "axios";
+import { createOrUpadateUser } from '../../../function/auth'
 
-const createOrUpadateUser = async (authToken) => {
-    const headers = {
-        headers: {
-            authtoken:authToken,
-            toto: 'toto'
-        },
-    };
-    return await axios.post(
-        `${process.env.REACT_APP_API}/users/create-or-update-user`,
-        {},
-        headers
-    );
-};
 
 const Login = ({ history }) => {
     const [email, setEmail] = useState("");
@@ -50,12 +37,20 @@ const Login = ({ history }) => {
 
             try {
                 const result = await createOrUpadateUser(idTokenResult.token);
-                console.log("🚀 ~ file: Login.jsx ~ line 53 ~ HandleSubmit ~ result", result)
-
+                console.log(
+                    "🚀 ~ file: Login.jsx ~ line 53 ~ HandleSubmit ~ result",
+                    result
+                );
+                dispatch(
+                    loginUser({
+                        name: result.data.user.name,
+                        email: result.data.user.email,
+                        token: idTokenResult.token,
+                        role: result.data.user.role,
+                        _id: result.data.user._id,
+                    })
+                );
             } catch (error) {}
-            // dispatch(
-            //     loginUser({ email: user.email, token: idTokenResult.token })
-            // );
             toast.success("Login with success");
             history.push("/");
         } catch (error) {
@@ -69,10 +64,7 @@ const Login = ({ history }) => {
             .then(async (result) => {
                 const { user } = result;
                 const idTokenResult = await user.getIdTokenResult();
-
-                dispatch(
-                    loginUser({ email: user.email, token: idTokenResult.token })
-                );
+                dispatch(loginUser(idTokenResult));
                 toast.success("Login with success");
                 history.push("/");
             })

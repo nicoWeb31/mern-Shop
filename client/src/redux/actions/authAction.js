@@ -1,15 +1,34 @@
-import {LOGGED_IN_USER, LOGGED_OUT} from '../type/authType'
+import { LOGGED_IN_USER, LOGGED_OUT } from "../type/authType";
+import { createOrUpadateUser } from "../../function/auth";
 
-export const loginUser = (data) =>{
-    return {
-        type: LOGGED_IN_USER,
-        payload: data
-    }
-}
+// export const loginUser = (data) =>{
+//     return {
+//         type: LOGGED_IN_USER,
+//         payload: data
+//     }
+// }
 
-export const logoutUser = () =>{
+export const loginUser = (idTokenResult) => async (dispatch) => {
+    try {
+        const result = await createOrUpadateUser(idTokenResult);
+        const data = {
+            name: result.data.user.name,
+            email: result.data.user.email,
+            token: idTokenResult.token,
+            role: result.data.user.role,
+            _id: result.data.user._id,
+        };
+
+        dispatch({
+            type: LOGGED_IN_USER,
+            payload: data,
+        });
+    } catch (error) {}
+};
+
+export const logoutUser = () => {
     return {
         type: LOGGED_OUT,
-        payload: null
-    }
-}
+        payload: null,
+    };
+};
