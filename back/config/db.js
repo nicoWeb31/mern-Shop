@@ -7,7 +7,8 @@ export default async()=>{
         const connection = await mongoose.connect(URI,{
             useUnifiedTopology: true,
             useNewUrlParser: true,
-            useCreateIndex: true
+            useCreateIndex: true,
+            useFindAndModify:true
         })
 
         console.log(` Connection to mongoDb is established.... 🙂 !! : ${connection.connection.host}`.cyan.underline);
