@@ -1,11 +1,26 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { auth, googleAuthProvider } from "../../../firebase";
 import { toast } from "react-toastify";
 import { Button } from "antd";
-import { MailOutlined,GoogleOutlined } from "@ant-design/icons";
+import { MailOutlined, GoogleOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../../../redux/actions/authAction";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
+import axios from "axios";
+
+const createOrUpadateUser = async (authToken) => {
+    const headers = {
+        headers: {
+            authtoken:authToken,
+            toto: 'toto'
+        },
+    };
+    return await axios.post(
+        `${process.env.REACT_APP_API}/users/create-or-update-user`,
+        {},
+        headers
+    );
+};
 
 const Login = ({ history }) => {
     const [email, setEmail] = useState("");
@@ -21,12 +36,10 @@ const Login = ({ history }) => {
         }
     }, []);
 
-
-
     const HandleSubmit = async (e) => {
         e.preventDefault();
         setLoding(true);
-        console.table(email, password);
+
         try {
             const { user } = await auth.signInWithEmailAndPassword(
                 email,
@@ -35,9 +48,14 @@ const Login = ({ history }) => {
 
             const idTokenResult = await user.getIdTokenResult();
 
-            dispatch(
-                loginUser({ email: user.email, token: idTokenResult.token })
-            );
+            try {
+                const result = await createOrUpadateUser(idTokenResult.token);
+                console.log("🚀 ~ file: Login.jsx ~ line 53 ~ HandleSubmit ~ result", result)
+
+            } catch (error) {}
+            // dispatch(
+            //     loginUser({ email: user.email, token: idTokenResult.token })
+            // );
             toast.success("Login with success");
             history.push("/");
         } catch (error) {
@@ -46,22 +64,20 @@ const Login = ({ history }) => {
         }
     };
 
-    const HandleSubmitWithGoogle = async()=>{
+    const HandleSubmitWithGoogle = async () => {
         auth.signInWithPopup(googleAuthProvider)
-        .then(async (result) => {
-            const { user } = result;
-            const idTokenResult = await user.getIdTokenResult();
+            .then(async (result) => {
+                const { user } = result;
+                const idTokenResult = await user.getIdTokenResult();
 
-            dispatch(
-                loginUser({ email: user.email, token: idTokenResult.token })
-            );
-            toast.success("Login with success");
-            history.push("/");
-        })
-        .catch(
-            (err)=> toast.error(err.message)
-        )
-    }
+                dispatch(
+                    loginUser({ email: user.email, token: idTokenResult.token })
+                );
+                toast.success("Login with success");
+                history.push("/");
+            })
+            .catch((err) => toast.error(err.message));
+    };
 
     //____________________form_________________________________
     const loginForm = () => {
@@ -107,22 +123,31 @@ const Login = ({ history }) => {
         <div className="container p-5">
             <div className="row">
                 <div className="col-md-6 offset-md-3">
-                    { !loading ? (<h4>Login</h4>) : (<h4 className="text-danger">Loding....</h4>)}
+                    {!loading ? (
+                        <h4>Login</h4>
+                    ) : (
+                        <h4 className="text-danger">Loding....</h4>
+                    )}
                     {loginForm()}
 
                     <Button
-                    type="danger"
-                    block
-                    shape="round"
-                    icon={<GoogleOutlined />}
-                    onClick={HandleSubmitWithGoogle}
-                    size="large"
-
-                >
-                    {" "}
-                    Login with Google
-                </Button>
-                <Link to='/forget/password' className="float-right text-danger m-3"> Forget password</Link>
+                        type="danger"
+                        block
+                        shape="round"
+                        icon={<GoogleOutlined />}
+                        onClick={HandleSubmitWithGoogle}
+                        size="large"
+                    >
+                        {" "}
+                        Login with Google
+                    </Button>
+                    <Link
+                        to="/forget/password"
+                        className="float-right text-danger m-3"
+                    >
+                        {" "}
+                        Forget password
+                    </Link>
                 </div>
                 <div className="col-6"></div>
             </div>
