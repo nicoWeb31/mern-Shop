@@ -4,8 +4,11 @@ const app = express();
 import morgan from 'morgan';
 import cors from 'cors';
 
+
+
+
 //routes
-import userRoute from './routes/usersRoute.js';
+import userRoute from './routes/authRoute.js';
 
 
 //____________________middlware_________________________________
@@ -24,7 +27,7 @@ app.use((req,res,next) => {
 app.use(cors());
 
 
-///_____________________routes_______________________________________
+///_____________________routes middlware_______________________________________
 app.use("/api/v1/users",userRoute)
 
 
