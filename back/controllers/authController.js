@@ -20,7 +20,18 @@ export const createOrUpdateUser = async (req, res) => {
         res.status(201).json({
             status: "success",
             message: "user create successfully",
-            user:newUser,
-        })
+            user: newUser,
+        });
     }
+};
+
+export const currentUser = async (req, res) => {
+    await User.findOne({ email: req.user.email }).exec((err, user) => {
+        if (err) throw new Error(err);
+
+        res.status(200).json({
+            status: "success",
+            user
+        });
+    });
 };

@@ -8,7 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 import { auth } from "../../firebase";
 import { useDispatch } from "react-redux";
-import { loginUser } from "../../redux/actions/authAction";
+import { CurrentUser } from "../../redux/actions/authAction";
 
 import "./app.style.scss";
 import Header from "../menu/Header";
@@ -23,14 +23,15 @@ const App = () => {
         const unsubscrible = auth.onAuthStateChanged(async (user) => {
             console.log(user);
             if (user) {
-                const idTokenResult = await user.getIdTokenResult();
-
-                dispatch(
-                    loginUser({
-                        email: user.email,
-                        token: idTokenResult.token,
-                    })
-                );
+                try {
+                    const idTokenResult = await user.getIdTokenResult();    
+                    dispatch(
+                        CurrentUser(idTokenResult)
+                    );
+                    
+                } catch (error) {
+                    console.log(error)
+                }
             }
         });
 
