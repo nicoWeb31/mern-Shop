@@ -10,7 +10,7 @@ import { createOrUpadateUser } from "../../function/auth";
 
 export const loginUser = (idTokenResult) => async (dispatch) => {
     try {
-        const result = await createOrUpadateUser(idTokenResult);
+        const result = await createOrUpadateUser(idTokenResult.token);
         const data = {
             name: result.data.user.name,
             email: result.data.user.email,

@@ -35,22 +35,14 @@ const Login = ({ history }) => {
 
             const idTokenResult = await user.getIdTokenResult();
 
-            try {
                 const result = await createOrUpadateUser(idTokenResult.token);
                 console.log(
                     "🚀 ~ file: Login.jsx ~ line 53 ~ HandleSubmit ~ result",
                     result
                 );
-                dispatch(
-                    loginUser({
-                        name: result.data.user.name,
-                        email: result.data.user.email,
-                        token: idTokenResult.token,
-                        role: result.data.user.role,
-                        _id: result.data.user._id,
-                    })
-                );
-            } catch (error) {}
+                dispatch(loginUser(idTokenResult));
+
+
             toast.success("Login with success");
             history.push("/");
         } catch (error) {

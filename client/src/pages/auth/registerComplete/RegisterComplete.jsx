@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { auth } from "../../../firebase";
 import { toast } from "react-toastify";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { loginUser } from "../../../redux/actions/authAction";
-import { createOrUpadateUser } from '../../../function/auth';
-
 
 
 const RegisterComplete = ({ history }) => {
@@ -13,7 +11,6 @@ const RegisterComplete = ({ history }) => {
 
     const dispatch = useDispatch();
 
-    const userAuhtState = useSelector((state) => state.auth);
 
     useEffect(() => {
         const email = window.localStorage.getItem("emailForRegistration");
@@ -47,22 +44,8 @@ const RegisterComplete = ({ history }) => {
                 const idTokenResult = await user.getIdTokenResult();
                 //redux store
                 //TODO:
-                try {
-                    const result = await createOrUpadateUser(idTokenResult.token);
-                    console.log(
-                        "🚀 ~ file: Login.jsx ~ line 53 ~ HandleSubmit ~ result",
-                        result
-                    );
-                    dispatch(
-                        loginUser({
-                            name: result.data.user.name,
-                            email: result.data.user.email,
-                            token: idTokenResult.token,
-                            role: result.data.user.role,
-                            _id: result.data.user._id,
-                        })
-                    );
-                } catch (error) {}
+
+                dispatch(loginUser(idTokenResult));
 
                 //console.log("user",user,'idTokenResult',idTokenResult);
                 //redirect
