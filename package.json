@@ -5,8 +5,8 @@
   "description": "full stack mern",
   "main": "index.js",
   "scripts": {
-    "start": "node back/index",
-    "server": "nodemon back/index",
+    "start": "node --experimental-modules back/index",
+    "server": "nodemon --experimental-modules back/index",
     "client": "npm start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\" "
   },

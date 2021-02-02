@@ -1,5 +1,6 @@
 import express from 'express';
-import { createOrUpdateUser } from '../controllers/authController.js'
+import { createOrUpdateUser } from '../controllers/authController.js';
+import {authCheck} from '../middlware/auth.js'
 
 const router = express.Router();
 
@@ -9,7 +10,7 @@ const router = express.Router();
 //@route POST /api/users/login
 //@access Public
 
-router.post('/create-or-update-user',createOrUpdateUser)
+router.post('/create-or-update-user',authCheck,createOrUpdateUser)
 
 
 export default router;
