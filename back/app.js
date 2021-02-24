@@ -9,6 +9,7 @@ import cors from 'cors';
 
 //routes
 import userRoute from './routes/authRoute.js';
+import categoryRoute from './routes/categoryRoute.js'
 
 
 //____________________middlware_________________________________
@@ -29,6 +30,8 @@ app.use(cors());
 
 ///_____________________routes middlware_______________________________________
 app.use("/api/v1/users",userRoute)
+app.use("/api/v1/category",categoryRoute)
+
 
 
 
