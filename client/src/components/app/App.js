@@ -16,9 +16,11 @@ import RegisterComplete from "../../pages/auth/registerComplete/RegisterComplete
 import ForgotPassword from "../../pages/auth/forgotpassword/ForgotPassword";
 import { currentUser } from "../../function/auth";
 import History from "../../pages/user/History";
-import UserRoute from "../../components/routes/UserRoute"
+import UserRoute from "../../components/routes/UserRoute";
+import AdminRoute from "../../components/routes/AdminRoute";
 import Password from "../../pages/user/Password";
 import WishList from "../../pages/user/WhishList";
+import AdminDashbord from "../../pages/admin/AdminDashbord";
 
 
 const App = () => {
@@ -66,6 +68,10 @@ const App = () => {
                 <UserRoute path="/user/history" exact component={History} />
                 <UserRoute path="/user/password" exact component={Password} />
                 <UserRoute path="/user/whislist" exact component={WishList} />
+                {/* protect Route for Admin */}
+                <AdminRoute path="/admin/dashbord" exact component={AdminDashbord} />
+
+
 
             </Switch>
             <ToastContainer />

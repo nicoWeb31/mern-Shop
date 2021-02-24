@@ -27,3 +27,16 @@ export const currentUser = async (authToken) => {
         headers
     );
 };
+
+export const currentAdmin = async (authToken) => {
+    const headers = {
+        headers: {
+            authtoken: authToken,
+        },
+    };
+    return await axios.post(
+        `${process.env.REACT_APP_API}/users/current-admin`,
+        {},
+        headers
+    );
+};
