@@ -14,7 +14,6 @@ import "./app.style.scss";
 import Header from "../menu/Header";
 import RegisterComplete from "../../pages/auth/registerComplete/RegisterComplete";
 import ForgotPassword from "../../pages/auth/forgotpassword/ForgotPassword";
-import { currentUser } from "../../function/auth";
 import History from "../../pages/user/History";
 import UserRoute from "../../components/routes/UserRoute";
 import AdminRoute from "../../components/routes/AdminRoute";
@@ -22,14 +21,13 @@ import Password from "../../pages/user/Password";
 import WishList from "../../pages/user/WhishList";
 import AdminDashbord from "../../pages/admin/AdminDashbord";
 
-
 const App = () => {
     const dispatch = useDispatch();
 
     //to check firebase auth
     useEffect(() => {
         const unsubscrible = auth.onAuthStateChanged(async (user) => {
-            console.log(user);
+            // console.log(user);
             if (user) {
                 try {
                     const idTokenResult = await user.getIdTokenResult();
@@ -42,6 +40,7 @@ const App = () => {
 
         //cleanup
         return () => unsubscrible();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (
@@ -69,10 +68,11 @@ const App = () => {
                 <UserRoute path="/user/password" exact component={Password} />
                 <UserRoute path="/user/whislist" exact component={WishList} />
                 {/* protect Route for Admin */}
-                <AdminRoute path="/admin/dashbord" exact component={AdminDashbord} />
-
-
-
+                <AdminRoute
+                    path="/admin/dashbord"
+                    exact
+                    component={AdminDashbord}
+                />
             </Switch>
             <ToastContainer />
         </>
