@@ -1,7 +1,7 @@
 import React from 'react'
 import UserNav from '../../components/sidBarNav/UserNav'
 
-const History = () => {
+const WishList = () => {
     return (
         <div className='container-fluid'>
             <div className="row">
@@ -14,4 +14,4 @@ const History = () => {
     )
 }
 
-export default History
+export default WishList
