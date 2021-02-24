@@ -14,6 +14,9 @@ import "./app.style.scss";
 import Header from "../menu/Header";
 import RegisterComplete from "../../pages/auth/registerComplete/RegisterComplete";
 import ForgotPassword from "../../pages/auth/forgotpassword/ForgotPassword";
+import { currentUser } from "../../function/auth";
+import History from "../../pages/user/History";
+import UserRoute from "../../components/routes/UserRoute"
 
 const App = () => {
     const dispatch = useDispatch();
@@ -24,13 +27,10 @@ const App = () => {
             console.log(user);
             if (user) {
                 try {
-                    const idTokenResult = await user.getIdTokenResult();    
-                    dispatch(
-                        CurrentUser(idTokenResult)
-                    );
-                    
+                    const idTokenResult = await user.getIdTokenResult();
+                    dispatch(CurrentUser(idTokenResult));
                 } catch (error) {
-                    console.log(error)
+                    console.log(error);
                 }
             }
         });
@@ -58,6 +58,8 @@ const App = () => {
                     exact
                     component={RegisterComplete}
                 />
+
+                <UserRoute path="/user/history" exact component={History} />
             </Switch>
             <ToastContainer />
         </>

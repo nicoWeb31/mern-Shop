@@ -26,12 +26,14 @@ export const createOrUpdateUser = async (req, res) => {
 };
 
 export const currentUser = async (req, res) => {
-    await User.findOne({ email: req.user.email }).exec((err, user) => {
-        if (err) throw new Error(err);
+    try {
+        const user = await User.findOne({ email: req.user.email });
 
         res.status(200).json({
             status: "success",
-            user
+            user,
         });
-    });
+    } catch (error) {
+        console.log(error)
+    }
 };

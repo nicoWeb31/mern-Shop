@@ -6,8 +6,8 @@ import { MailOutlined, GoogleOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../../../redux/actions/authAction";
 import { Link } from "react-router-dom";
-import { createOrUpadateUser } from '../../../function/auth'
-
+import { createOrUpadateUser } from "../../../function/auth";
+import { currentUser } from "../../../function/auth";
 
 const Login = ({ history }) => {
     const [email, setEmail] = useState("");
@@ -18,10 +18,18 @@ const Login = ({ history }) => {
     const userAuhtState = useSelector((state) => state.auth);
 
     useEffect(() => {
+        //logginRedirectforAdmin
+        const roleBasedRedirect = (role) => {
+            if (role === "admin") {
+                history.push("/admin/dashbord");
+            } else {
+                history.push("/user/history");
+            }
+        };
         if (userAuhtState && userAuhtState.token) {
-            history.push("/");
+            roleBasedRedirect(userAuhtState.role);
         }
-    }, []);
+    }, [userAuhtState, history]);
 
     const HandleSubmit = async (e) => {
         e.preventDefault();
@@ -35,16 +43,11 @@ const Login = ({ history }) => {
 
             const idTokenResult = await user.getIdTokenResult();
 
-                const result = await createOrUpadateUser(idTokenResult.token);
-                console.log(
-                    "🚀 ~ file: Login.jsx ~ line 53 ~ HandleSubmit ~ result",
-                    result
-                );
-                dispatch(loginUser(idTokenResult));
-
+            dispatch(loginUser(idTokenResult));
+            // roleBasedRedirect(userAuhtState.role);
 
             toast.success("Login with success");
-            history.push("/");
+            // history.push("/");
         } catch (error) {
             toast.error(error.message);
             setLoding(false);
