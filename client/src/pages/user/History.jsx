@@ -9,6 +9,7 @@ const History = () => {
 
                     <UserNav/>
                 </div>
+                <div className="col">user dashBord</div>
             </div>
         </div>
     )
