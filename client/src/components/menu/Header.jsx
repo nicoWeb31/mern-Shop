@@ -65,11 +65,22 @@ const Header = () => {
                 <SubMenu
                     key="SubMenu"
                     icon={<SettingOutlined />}
-                    title={userAuhtState && userAuhtState.email.split('@')[0]}
+                    title={userAuhtState && userAuhtState.email.split("@")[0]}
                     className="float-right"
                 >
-                    <Item key="/user/history">dashbord</Item>
-                    <Item key="setting:2">Option 2</Item>
+                    {userAuhtState && userAuhtState.role === "suscriber" && (
+                        <Item>
+                            <Link to="/user/history"> Dashboard</Link>
+                        </Item>
+                    )}
+
+                    {userAuhtState && userAuhtState.role === "admin" && (
+                        <Item>
+                            <Link to="/admin/dashbord">Dashboard</Link>
+                        </Item>
+                    )}
+
+                    {/* <Item key="setting:2">Option 2</Item> */}
                     <Item icon={<LogoutOutlined />} onClick={logout}>
                         Logout
                     </Item>
