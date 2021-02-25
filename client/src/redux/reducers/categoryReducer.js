@@ -11,7 +11,7 @@ import {
 } from "../type/categoryType";
 
 
-export const CreateCategoryReducer = (state = {}, action) => {
+export const CreateCategoryReducer = (state = {category:{}}, action) => {
     switch (action.type) {
         case CREATE_CATEGORY_REQUEST:
             return {
@@ -21,7 +21,7 @@ export const CreateCategoryReducer = (state = {}, action) => {
         case CREATE_CATEGORY_SUCCESS:
             return {
                 loading: false,
-                success: true,
+                category: action.payload,
             };
 
         case CREATE_CATEGORY_FAIL:
@@ -62,18 +62,18 @@ export const deleteCategoryReducer = (state = {}, action) => {
 
 
 
-export const FetchSeedReducer = (state = { allSeed: [] }, action) => {
+export const FetchCategoryReducer = (state = { allCategories: [] }, action) => {
     switch (action.type) {
         case FETCH_CATEGORY_REQUEST:
             return {
                 loading: true,
-                allSeed: [],
+                allCategories: [],
             };
 
         case FETCH_CATEGORY_SUCCESS:
             return {
                 loading: false,
-                allSeed: action.payload,
+                allCategories: action.payload,
             };
 
         case FETCH_CATEGORY_FAIL:

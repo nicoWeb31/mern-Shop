@@ -9,6 +9,7 @@ import {
     DELETE_CATEGORY_SUCCESS,
     DELETE_CATEGORY_REQUEST,
 } from "../type/categoryType";
+import axios from "axios";
 import {
     createCategory,
     removeCategory,
@@ -16,10 +17,19 @@ import {
     listCategory,
 } from "../../function/category";
 
-export const createCategoryAction = (data) => async (dispatch) => {
+export const createCategoryAction = (data) => async (dispatch, getState) => {
     dispatch({ type: CREATE_CATEGORY_REQUEST });
+    const {
+        auth: { token },
+    } = getState();
     try {
-        const { data: newCategory } = await createCategory(data);
+        const { data: newCategory } = await axios.post(
+            `http://localhost:3000/api/v1/category`,
+            data,
+            {
+                headers: { token },
+            }
+        );
         dispatch({ type: CREATE_CATEGORY_SUCCESS, payload: newCategory });
     } catch (error) {
         dispatch({ type: CREATE_CATEGORY_FAIL, payload: error });
