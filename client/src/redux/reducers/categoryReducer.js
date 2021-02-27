@@ -92,21 +92,22 @@ export const FetchCategoryReducer = (state = { allCategories: [] }, action) => {
 };
 
 
-export const FetchOneCategoryReducer = (state = { allCategory: {} }, action) => {
+export const FetchOneCategoryReducer = (state = { category: {} }, action) => {
     switch (action.type) {
-        case FETCH_CATEGORY_REQUEST:
+        case GETONE_CATEGORY_REQUEST:
             return {
                 loading: true,
-                allCategory: {},
+                category: {},
             };
 
-        case FETCH_CATEGORY_SUCCESS:
+        case GETONE_CATEGORY_SUCCESS:
             return {
                 loading: false,
-                allCategory: action.payload,
+                category: action.payload,
+                success: true
             };
 
-        case FETCH_CATEGORY_FAIL:
+        case GETONE_CATEGORY_FAIL:
             return {
                 laoding: false,
                 error: action.payload,

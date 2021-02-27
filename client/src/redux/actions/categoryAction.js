@@ -74,8 +74,8 @@ export const getAllCategoryAction = () => async (dispatch) => {
 export const getOneCategoryAction = (slug) => async (dispatch) => {
     dispatch({ type: GETONE_CATEGORY_REQUEST });
     try {
-        const { data: Category } = await getCategory(slug);
-        dispatch({ type: GETONE_CATEGORY_SUCCESS, payload: Category });
+        const { data: category } = await getCategory(slug);
+        dispatch({ type: GETONE_CATEGORY_SUCCESS, payload: category.category });
     } catch (error) {
         dispatch({ type: GETONE_CATEGORY_FAIL, payload: error });
     }
