@@ -11,6 +11,9 @@ import {
     GETONE_CATEGORY_FAIL,
     GETONE_CATEGORY_REQUEST,
     GETONE_CATEGORY_SUCCESS,
+    UPDATE_CATEGORY_FAIL,
+    UPDATE_CATEGORY_REQUEST,
+    UPDATE_CATEGORY_SUCCESS,
 } from "../type/categoryType";
 
 
@@ -108,6 +111,30 @@ export const FetchOneCategoryReducer = (state = { category: {} }, action) => {
             };
 
         case GETONE_CATEGORY_FAIL:
+            return {
+                laoding: false,
+                error: action.payload,
+            };
+
+        default:
+            return state;
+    }
+};
+
+export const updateCategoryReducer = (state = {}, action) => {
+    switch (action.type) {
+        case UPDATE_CATEGORY_REQUEST:
+            return {
+                loading: true,
+            };
+
+        case UPDATE_CATEGORY_SUCCESS:
+            return {
+                loading: false,
+                success: true
+            };
+
+        case UPDATE_CATEGORY_FAIL:
             return {
                 laoding: false,
                 error: action.payload,

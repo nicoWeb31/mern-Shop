@@ -11,12 +11,16 @@ import {
     GETONE_CATEGORY_FAIL,
     GETONE_CATEGORY_REQUEST,
     GETONE_CATEGORY_SUCCESS,
+    UPDATE_CATEGORY_FAIL,
+    UPDATE_CATEGORY_REQUEST,
+    UPDATE_CATEGORY_SUCCESS,
 } from "../type/categoryType";
 import axios from "axios";
 import {
     removeCategory,
     getCategory,
     listCategory,
+    updateCategory,
 } from "../../function/category";
 
 export const createCategoryAction = (category) => async (
@@ -46,14 +50,14 @@ export const createCategoryAction = (category) => async (
     }
 };
 
-export const removeCategoryAction = (slug) => async (dispatch,getState) => {
+export const removeCategoryAction = (slug) => async (dispatch, getState) => {
     dispatch({ type: DELETE_CATEGORY_REQUEST });
     const {
         auth: { token },
     } = getState();
 
     try {
-        await removeCategory(slug,token);
+        await removeCategory(slug, token);
         dispatch({ type: DELETE_CATEGORY_SUCCESS });
     } catch (error) {
         dispatch({ type: DELETE_CATEGORY_FAIL, payload: error });
@@ -70,7 +74,6 @@ export const getAllCategoryAction = () => async (dispatch) => {
     }
 };
 
-
 export const getOneCategoryAction = (slug) => async (dispatch) => {
     dispatch({ type: GETONE_CATEGORY_REQUEST });
     try {
@@ -78,5 +81,21 @@ export const getOneCategoryAction = (slug) => async (dispatch) => {
         dispatch({ type: GETONE_CATEGORY_SUCCESS, payload: category.category });
     } catch (error) {
         dispatch({ type: GETONE_CATEGORY_FAIL, payload: error });
+    }
+};
+
+export const updateCategoryAction = (slug, data) => async (
+    dispatch,
+    getState
+) => {
+    dispatch({ type: UPDATE_CATEGORY_REQUEST });
+    const {
+        auth: { token },
+    } = getState();
+    try {
+        const { data: category } = await updateCategory(slug, data, token);
+        dispatch({ type: UPDATE_CATEGORY_SUCCESS, payload: category.category });
+    } catch (error) {
+        dispatch({ type: UPDATE_CATEGORY_FAIL, payload: error });
     }
 };

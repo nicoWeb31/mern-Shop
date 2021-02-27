@@ -10,8 +10,8 @@ export const removeCategory = async (slug, authtoken) => {
     });
 };
 
-export const updateCategory = async (slug, authtoken) => {
-    axios.put(`${process.env.REACT_APP_API}/category/${slug}`, {
+export const updateCategory = async (slug,data, authtoken) => {
+    axios.put(`${process.env.REACT_APP_API}/category/${slug}`,{data}, {
         headers: { authtoken },
     });
 };

@@ -5,6 +5,7 @@ import {
     FetchCategoryReducer,
     deleteCategoryReducer,
     FetchOneCategoryReducer,
+    updateCategoryReducer,
 } from "./categoryReducer";
 
 const rootReducer = combineReducers({
@@ -13,6 +14,7 @@ const rootReducer = combineReducers({
     allCategory: FetchCategoryReducer,
     deleteCategory: deleteCategoryReducer,
     oneCategory: FetchOneCategoryReducer,
+    updateCategory: updateCategoryReducer,
 });
 
 export default rootReducer;

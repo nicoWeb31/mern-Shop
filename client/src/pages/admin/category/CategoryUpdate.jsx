@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import AdminNav from "../../../components/sidBarNav/AdminNav";
 import { useDispatch, useSelector } from "react-redux";
-import { getOneCategoryAction } from "../../../redux/actions/categoryAction";
+import { getOneCategoryAction, updateCategoryAction } from "../../../redux/actions/categoryAction";
 
 const CategoryUpdate = ({ history, match }) => {
     const { slug } = match.params;
@@ -21,6 +21,7 @@ const CategoryUpdate = ({ history, match }) => {
 
     const onhandleSubmit = (e) => {
         e.preventDefault();
+        dispatch(updateCategoryAction(slug,{name: updateCategory}))
     };
 
     const showCategoryForm = () => {
