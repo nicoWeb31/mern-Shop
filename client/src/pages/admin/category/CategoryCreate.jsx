@@ -1,29 +1,57 @@
 import React, { useEffect, useState } from "react";
 import AdminNav from "../../../components/sidBarNav/AdminNav";
-import {toast} from "react-toastify";
+import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
+import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import {
     getAllCategoryAction,
     createCategoryAction,
     removeCategoryAction,
 } from "../../../redux/actions/categoryAction";
+import { Link } from "react-router-dom";
 
 const CategoryCreate = () => {
     const [category, setCategory] = useState("");
 
     const dispatch = useDispatch();
-    const { token } = useSelector((state) => state.auth);
-    const { error, loading, category: newCategory } = useSelector(
+    // const { token } = useSelector((state) => state.auth);
+    const { error, loading, category: newCategory, success } = useSelector(
         (state) => state.createCategory
     );
+
+    const {
+        loading: loadingGetCat,
+        allCategories: { category: categories },
+        error: errorGetCat,
+    } = useSelector((state) => state.allCategory);
+
+    useEffect(() => {
+        dispatch(getAllCategoryAction());
+    }, []);
+
+    useEffect(() => {
+        if (error) {
+            toast.error(error.message);
+        }
+        if (success && !loading) {
+            toast.success(
+                `category ${newCategory.category.name} create with success`
+            );
+        }
+    }, [error, success, newCategory, loading]);
 
     //_________________________function____________________________________________________
 
     const onhandleSubmit = (e) => {
         e.preventDefault();
-        dispatch(createCategoryAction({name : category}));
-        toast.success(`category ${category} successfully created`);
-        setCategory('');
+        dispatch(createCategoryAction({ name: category }));
+        setCategory("");
+    };
+
+    const onDeleteCategory = (slug) => {
+        if (window.confirm("Are you sure you want to delete this category?")) {
+            dispatch(removeCategoryAction(slug));
+        }
     };
 
     //_________________________render____________________________________________________
@@ -32,13 +60,18 @@ const CategoryCreate = () => {
         return (
             <form onSubmit={onhandleSubmit}>
                 <div className="form-group">
-                    <label>Name</label>
+                    <label className="">Name</label>
                     <input
+                        className="form-control"
+                        required
+                        autoFocus
                         type="text"
                         value={category}
                         onChange={(e) => setCategory(e.target.value)}
                     />
-                    <button type="submit">enoyer</button>
+                    <button type="submit" className="btn btn-outline-primary">
+                        enoyer
+                    </button>
                 </div>
             </form>
         );
@@ -52,8 +85,39 @@ const CategoryCreate = () => {
                         <AdminNav />
                     </div>
                     <div className="col">
-                        <h4>Create Category</h4>
+                        {loading ? (
+                            <h4 className="text-danger">Loading</h4>
+                        ) : (
+                            <h4>Create Category</h4>
+                        )}
                         {showCategoryForm()}
+                        <hr />
+                        {categories &&
+                            categories.map((category) => (
+                                <div
+                                    key={category._id}
+                                    className="alert alert-secondary"
+                                >
+                                    {category.name}
+                                    <span
+                                        className="btn btn sm float-right"
+                                        onClick={() =>
+                                            dispatch(
+                                                onDeleteCategory(category.slug)
+                                            )
+                                        }
+                                    >
+                                        <DeleteOutlined className="text-warning" />
+                                    </span>
+                                    <span className="btn btn sm float-right">
+                                        <Link
+                                            to={`/admin/category/${category.slug}`}
+                                        >
+                                            <EditOutlined className="text-danger" />
+                                        </Link>
+                                    </span>
+                                </div>
+                            ))}
                     </div>
                 </div>
             </div>

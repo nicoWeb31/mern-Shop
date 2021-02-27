@@ -43,10 +43,18 @@ export const createCategoryAction = (category) => async (
     }
 };
 
-export const removeCategoryAction = (id) => async (dispatch) => {
+export const removeCategoryAction = (id) => async (dispatch,getState) => {
     dispatch({ type: DELETE_CATEGORY_REQUEST });
+    const {
+        auth: { token },
+    } = getState();
+    const config = {
+        headers: {
+            authtoken: token,
+        },
+    };
     try {
-        await removeCategory(id);
+        await removeCategory(id,token);
         dispatch({ type: DELETE_CATEGORY_SUCCESS });
     } catch (error) {
         dispatch({ type: DELETE_CATEGORY_FAIL, payload: error });

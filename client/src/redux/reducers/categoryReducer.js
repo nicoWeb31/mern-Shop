@@ -22,6 +22,7 @@ export const CreateCategoryReducer = (state = {category:{}}, action) => {
             return {
                 loading: false,
                 category: action.payload,
+                success: true
             };
 
         case CREATE_CATEGORY_FAIL:
