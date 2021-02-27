@@ -8,6 +8,9 @@ import {
     DELETE_CATEGORY_FAIL,
     DELETE_CATEGORY_SUCCESS,
     DELETE_CATEGORY_REQUEST,
+    GETONE_CATEGORY_FAIL,
+    GETONE_CATEGORY_REQUEST,
+    GETONE_CATEGORY_SUCCESS,
 } from "../type/categoryType";
 import axios from "axios";
 import {
@@ -43,18 +46,14 @@ export const createCategoryAction = (category) => async (
     }
 };
 
-export const removeCategoryAction = (id) => async (dispatch,getState) => {
+export const removeCategoryAction = (slug) => async (dispatch,getState) => {
     dispatch({ type: DELETE_CATEGORY_REQUEST });
     const {
         auth: { token },
     } = getState();
-    const config = {
-        headers: {
-            authtoken: token,
-        },
-    };
+
     try {
-        await removeCategory(id,token);
+        await removeCategory(slug,token);
         dispatch({ type: DELETE_CATEGORY_SUCCESS });
     } catch (error) {
         dispatch({ type: DELETE_CATEGORY_FAIL, payload: error });
@@ -68,5 +67,16 @@ export const getAllCategoryAction = () => async (dispatch) => {
         dispatch({ type: FETCH_CATEGORY_SUCCESS, payload: CategoryList });
     } catch (error) {
         dispatch({ type: FETCH_CATEGORY_FAIL, payload: error });
+    }
+};
+
+
+export const getOneCategoryAction = (slug) => async (dispatch) => {
+    dispatch({ type: GETONE_CATEGORY_REQUEST });
+    try {
+        const { data: Category } = await getCategory(slug);
+        dispatch({ type: GETONE_CATEGORY_SUCCESS, payload: Category });
+    } catch (error) {
+        dispatch({ type: GETONE_CATEGORY_FAIL, payload: error });
     }
 };

@@ -21,6 +21,7 @@ import Password from "../../pages/user/Password";
 import WishList from "../../pages/user/WhishList";
 import AdminDashbord from "../../pages/admin/AdminDashbord";
 import CategoryCreate from "../../pages/admin/category/CategoryCreate";
+import CategoryUpdate from "../../pages/admin/category/CategoryUpdate";
 
 const App = () => {
     const dispatch = useDispatch();
@@ -78,6 +79,12 @@ const App = () => {
                     path="/admin/category"
                     exact
                     component={CategoryCreate}
+                />
+
+                <AdminRoute
+                    path="/admin/category/:slug"
+                    exact
+                    component={CategoryUpdate}
                 />
             </Switch>
             <ToastContainer />

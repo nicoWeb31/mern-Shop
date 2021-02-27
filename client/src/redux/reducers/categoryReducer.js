@@ -7,7 +7,10 @@ import {
     FETCH_CATEGORY_SUCCESS,
     DELETE_CATEGORY_FAIL,
     DELETE_CATEGORY_SUCCESS,
-    DELETE_CATEGORY_REQUEST
+    DELETE_CATEGORY_REQUEST,
+    GETONE_CATEGORY_FAIL,
+    GETONE_CATEGORY_REQUEST,
+    GETONE_CATEGORY_SUCCESS,
 } from "../type/categoryType";
 
 
@@ -75,6 +78,32 @@ export const FetchCategoryReducer = (state = { allCategories: [] }, action) => {
             return {
                 loading: false,
                 allCategories: action.payload,
+            };
+
+        case FETCH_CATEGORY_FAIL:
+            return {
+                laoding: false,
+                error: action.payload,
+            };
+
+        default:
+            return state;
+    }
+};
+
+
+export const FetchOneCategoryReducer = (state = { allCategory: {} }, action) => {
+    switch (action.type) {
+        case FETCH_CATEGORY_REQUEST:
+            return {
+                loading: true,
+                allCategory: {},
+            };
+
+        case FETCH_CATEGORY_SUCCESS:
+            return {
+                loading: false,
+                allCategory: action.payload,
             };
 
         case FETCH_CATEGORY_FAIL:

@@ -24,12 +24,17 @@ const CategoryCreate = () => {
         allCategories: { category: categories },
         error: errorGetCat,
     } = useSelector((state) => state.allCategory);
+    
+    const {success : successDelete} = useSelector((state) => state.deleteCategory);
 
     useEffect(() => {
         dispatch(getAllCategoryAction());
     }, []);
 
     useEffect(() => {
+        if(successDelete){
+            toast.success('delete with success !')
+        }
         if (error) {
             toast.error(error.message);
         }
@@ -38,7 +43,7 @@ const CategoryCreate = () => {
                 `category ${newCategory.category.name} create with success`
             );
         }
-    }, [error, success, newCategory, loading]);
+    }, [error, success, newCategory, loading, successDelete]);
 
     //_________________________function____________________________________________________
 
@@ -46,12 +51,17 @@ const CategoryCreate = () => {
         e.preventDefault();
         dispatch(createCategoryAction({ name: category }));
         setCategory("");
+        dispatch(getAllCategoryAction());
+
     };
 
     const onDeleteCategory = (slug) => {
         if (window.confirm("Are you sure you want to delete this category?")) {
             dispatch(removeCategoryAction(slug));
         }
+        dispatch(getAllCategoryAction());
+
+
     };
 
     //_________________________render____________________________________________________
@@ -102,9 +112,7 @@ const CategoryCreate = () => {
                                     <span
                                         className="btn btn sm float-right"
                                         onClick={() =>
-                                            dispatch(
-                                                onDeleteCategory(category.slug)
-                                            )
+                                            onDeleteCategory(category.slug)
                                         }
                                     >
                                         <DeleteOutlined className="text-warning" />
