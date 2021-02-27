@@ -27,37 +27,30 @@ const CategoryCreate = () => {
     
     const {success : successDelete} = useSelector((state) => state.deleteCategory);
 
+    
     useEffect(() => {
         dispatch(getAllCategoryAction());
+    
+
     }, []);
-
-    useEffect(() => {
-        if(successDelete){
-            toast.success('delete with success !')
-        }
-        if (error) {
-            toast.error(error.message);
-        }
-        if (success && !loading) {
-            toast.success(
-                `category ${newCategory.category.name} create with success`
-            );
-        }
-    }, [error, success, newCategory, loading, successDelete]);
-
+    
     //_________________________function____________________________________________________
-
+    
     const onhandleSubmit = (e) => {
         e.preventDefault();
         dispatch(createCategoryAction({ name: category }));
         setCategory("");
-        dispatch(getAllCategoryAction());
-
-    };
-
-    const onDeleteCategory = (slug) => {
-        if (window.confirm("Are you sure you want to delete this category?")) {
-            dispatch(removeCategoryAction(slug));
+        toast.success(
+            `category ${category} create with success`
+            );
+            dispatch(getAllCategoryAction());
+            
+        };
+        
+        const onDeleteCategory = (slug) => {
+            if (window.confirm("Are you sure you want to delete this category?")) {
+                dispatch(removeCategoryAction(slug));
+                toast.success('delete with success !')
         }
         dispatch(getAllCategoryAction());
 

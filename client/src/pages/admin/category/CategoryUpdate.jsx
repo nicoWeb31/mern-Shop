@@ -1,27 +1,42 @@
 import React, { useState, useEffect } from "react";
 import AdminNav from "../../../components/sidBarNav/AdminNav";
 import { useDispatch, useSelector } from "react-redux";
-import { getOneCategoryAction, updateCategoryAction } from "../../../redux/actions/categoryAction";
+import {
+    getOneCategoryAction,
+    updateCategoryAction,
+} from "../../../redux/actions/categoryAction";
+import { toast } from "react-toastify";
+import { UPDATE_CATEGORY_RESTET } from "../../../redux/type/categoryType";
 
 const CategoryUpdate = ({ history, match }) => {
     const { slug } = match.params;
-    const [updateCategory, setUpdateCategory] = useState('');
+    const [updateCategory, setUpdateCategory] = useState("");
 
     const dispatch = useDispatch();
-    const {
-        category,
-    } = useSelector((state) => state.oneCategory);
-        console.log("🚀 ~ file: CategoryUpdate.jsx ~ line 14 ~ CategoryUpdate ~ category", category)
+    const { category } = useSelector((state) => state.oneCategory);
 
+
+    const { success: successUpadte } = useSelector(
+        (state) => state.updateCategory
+    );
 
     useEffect(() => {
-        dispatch(getOneCategoryAction(slug));
-        setUpdateCategory(category.name);
-    }, [slug]);
+        if (successUpadte) {
+            toast.success("Updaded !");
+            history.push("/admin/category");
+            dispatch({ type: UPDATE_CATEGORY_RESTET });
+        } else {
+            if (!category.name || category.slug !== slug) {
+                dispatch(getOneCategoryAction(slug));
+            } else {
+                setUpdateCategory(category.name);
+            }
+        }
+    }, [dispatch, slug, history, successUpadte,category]);
 
     const onhandleSubmit = (e) => {
         e.preventDefault();
-        dispatch(updateCategoryAction(slug,{name: updateCategory}))
+        dispatch(updateCategoryAction(slug, updateCategory));
     };
 
     const showCategoryForm = () => {
@@ -51,9 +66,7 @@ const CategoryUpdate = ({ history, match }) => {
                 <div className="col-md-2">
                     <AdminNav />
                 </div>
-                <div className="col">
-                    {showCategoryForm()}
-                </div>
+                <div className="col">{showCategoryForm()}</div>
             </div>
         </div>
     );

@@ -40,6 +40,7 @@ export const read = async (req, res, next) => {
 };
 
 export const update = async (req, res, next) => {
+    // console.log(req.params.slug, req.body.name)
 
     try {
         const categoryUpdated = await Category.findOneAndUpdate({slug: req.params.slug},{name: req.body.name, slug:slugify(req.body.name)},{new: true});
