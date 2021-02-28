@@ -30,9 +30,9 @@ const CategoryCreate = () => {
     
     useEffect(() => {
         dispatch(getAllCategoryAction());
+    }, []);
     
 
-    }, []);
     
     //_________________________function____________________________________________________
     

@@ -6,33 +6,46 @@ import {
     updateCategoryAction,
 } from "../../../redux/actions/categoryAction";
 import { toast } from "react-toastify";
-import { UPDATE_CATEGORY_RESTET } from "../../../redux/type/categoryType";
+import {
+    UPDATE_CATEGORY_RESTET,
+    GETONE_CATEGORY_RESET,
+} from "../../../redux/type/categoryType";
 
 const CategoryUpdate = ({ history, match }) => {
     const { slug } = match.params;
     const [updateCategory, setUpdateCategory] = useState("");
 
     const dispatch = useDispatch();
-    const { category } = useSelector((state) => state.oneCategory);
-
+    const { category, success } = useSelector((state) => state.oneCategory);
 
     const { success: successUpadte } = useSelector(
         (state) => state.updateCategory
     );
 
+
+
+    //au montage et demontage du component
     useEffect(() => {
+        dispatch(getOneCategoryAction(slug));
+        return () => {
+            dispatch({ type: GETONE_CATEGORY_RESET });
+            setUpdateCategory("");
+        };
+    }, []);
+
+        
+    
+    //quand success est a true je met a jour mon state
+    useEffect(() => {
+        if (success) {
+            setUpdateCategory(category.name);
+        }
         if (successUpadte) {
             toast.success("Updaded !");
             history.push("/admin/category");
             dispatch({ type: UPDATE_CATEGORY_RESTET });
-        } else {
-            if (!category.name || category.slug !== slug) {
-                dispatch(getOneCategoryAction(slug));
-            } else {
-                setUpdateCategory(category.name);
-            }
         }
-    }, [dispatch, slug, history, successUpadte,category]);
+    }, [slug, history, successUpadte, dispatch,success]);
 
     const onhandleSubmit = (e) => {
         e.preventDefault();
