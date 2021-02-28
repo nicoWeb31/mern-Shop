@@ -3,6 +3,7 @@ import AdminNav from "../../../components/sidBarNav/AdminNav";
 import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import { FETCH_CATEGORY_RESET } from "../../../redux/type/categoryType";
 import {
     getAllCategoryAction,
     createCategoryAction,
@@ -18,43 +19,41 @@ const CategoryCreate = () => {
     const { error, loading, category: newCategory, success } = useSelector(
         (state) => state.createCategory
     );
+    const {success: successUpdate} = useSelector((state) => state.updateCategory)
 
     const {
         loading: loadingGetCat,
         allCategories: { category: categories },
         error: errorGetCat,
     } = useSelector((state) => state.allCategory);
-    
-    const {success : successDelete} = useSelector((state) => state.deleteCategory);
 
-    
+    const { success: successDelete } = useSelector(
+        (state) => state.deleteCategory
+    );
+
     useEffect(() => {
         dispatch(getAllCategoryAction());
-    }, []);
-    
+        // return () => {
+        //     dispatch({ type: FETCH_CATEGORY_RESET });
+        // };
+    }, [dispatch,successDelete,success, successUpdate]);
 
-    
     //_________________________function____________________________________________________
-    
+
     const onhandleSubmit = (e) => {
         e.preventDefault();
         dispatch(createCategoryAction({ name: category }));
         setCategory("");
-        toast.success(
-            `category ${category} create with success`
-            );
-            dispatch(getAllCategoryAction());
-            
-        };
-        
-        const onDeleteCategory = (slug) => {
-            if (window.confirm("Are you sure you want to delete this category?")) {
-                dispatch(removeCategoryAction(slug));
-                toast.success('delete with success !')
-        }
+        toast.success(`category ${category} create with success`);
         dispatch(getAllCategoryAction());
+    };
 
-
+    const onDeleteCategory = (slug) => {
+        if (window.confirm("Are you sure you want to delete this category?")) {
+            dispatch(removeCategoryAction(slug));
+            toast.success("delete with success !");
+            dispatch(getAllCategoryAction());
+        }
     };
 
     //_________________________render____________________________________________________

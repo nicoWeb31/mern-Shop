@@ -4,11 +4,13 @@ import { useDispatch, useSelector } from "react-redux";
 import {
     getOneCategoryAction,
     updateCategoryAction,
+    getAllCategoryAction
 } from "../../../redux/actions/categoryAction";
 import { toast } from "react-toastify";
 import {
     UPDATE_CATEGORY_RESTET,
     GETONE_CATEGORY_RESET,
+    
 } from "../../../redux/type/categoryType";
 
 const CategoryUpdate = ({ history, match }) => {
@@ -44,6 +46,7 @@ const CategoryUpdate = ({ history, match }) => {
             toast.success("Updaded !");
             history.push("/admin/category");
             dispatch({ type: UPDATE_CATEGORY_RESTET });
+            dispatch(getAllCategoryAction());
         }
     }, [slug, history, successUpadte, dispatch,success]);
 

@@ -16,6 +16,7 @@ import {
     UPDATE_CATEGORY_SUCCESS,
     UPDATE_CATEGORY_RESTET,
     GETONE_CATEGORY_RESET,
+    FETCH_CATEGORY_RESET
 } from "../type/categoryType";
 
 export const CreateCategoryReducer = (state = { category: {} }, action) => {
@@ -79,6 +80,7 @@ export const FetchCategoryReducer = (state = { allCategories: [] }, action) => {
             return {
                 loading: false,
                 allCategories: action.payload,
+                success: true,
             };
 
         case FETCH_CATEGORY_FAIL:
@@ -86,6 +88,11 @@ export const FetchCategoryReducer = (state = { allCategories: [] }, action) => {
                 laoding: false,
                 error: action.payload,
             };
+        case FETCH_CATEGORY_RESET:
+            return {
+                allCategories: [],
+                success: false,
+            }    
 
         default:
             return state;

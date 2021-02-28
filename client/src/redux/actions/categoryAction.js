@@ -98,13 +98,17 @@ export const updateCategoryAction = (slug, data) => async (
         auth: { token },
     } = getState();
 
+    const config = {
+        headers: {
+            authtoken: token,
+        },
+    };
+
     try {
         axios.put(
             `${process.env.REACT_APP_API}/category/${slug}`,
-            { name: data },
-            {
-                headers: { token },
-            }
+            { name: data },config
+
         );
         dispatch({ type: UPDATE_CATEGORY_SUCCESS });
     } catch (error) {
