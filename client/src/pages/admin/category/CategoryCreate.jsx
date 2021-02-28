@@ -19,7 +19,9 @@ const CategoryCreate = () => {
     const { error, loading, category: newCategory, success } = useSelector(
         (state) => state.createCategory
     );
-    const {success: successUpdate} = useSelector((state) => state.updateCategory)
+    const { success: successUpadte } = useSelector(
+        (state) => state.updateCategory
+    );
 
     const {
         loading: loadingGetCat,
@@ -32,11 +34,10 @@ const CategoryCreate = () => {
     );
 
     useEffect(() => {
-        dispatch(getAllCategoryAction());
-        // return () => {
-        //     dispatch({ type: FETCH_CATEGORY_RESET });
-        // };
-    }, [dispatch,successDelete,success, successUpdate]);
+        if (!successUpadte) {
+            dispatch(getAllCategoryAction());
+        }
+    }, [dispatch, successDelete, success, successUpadte]);
 
     //_________________________function____________________________________________________
 
@@ -72,7 +73,7 @@ const CategoryCreate = () => {
                         onChange={(e) => setCategory(e.target.value)}
                     />
                     <button type="submit" className="btn btn-outline-primary">
-                        enoyer
+                        envoyer
                     </button>
                 </div>
             </form>

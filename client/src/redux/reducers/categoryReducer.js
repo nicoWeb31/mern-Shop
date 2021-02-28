@@ -154,6 +154,7 @@ export const updateCategoryReducer = (state = { category: {} }, action) => {
         case UPDATE_CATEGORY_RESTET:
             return {
                 category: {},
+                success: false,
             };
 
         default:

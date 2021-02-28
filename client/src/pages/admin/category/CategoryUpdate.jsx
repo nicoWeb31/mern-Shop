@@ -4,14 +4,14 @@ import { useDispatch, useSelector } from "react-redux";
 import {
     getOneCategoryAction,
     updateCategoryAction,
-    getAllCategoryAction
+    getAllCategoryAction,
 } from "../../../redux/actions/categoryAction";
 import { toast } from "react-toastify";
 import {
     UPDATE_CATEGORY_RESTET,
     GETONE_CATEGORY_RESET,
-    
 } from "../../../redux/type/categoryType";
+import { set } from "mongoose";
 
 const CategoryUpdate = ({ history, match }) => {
     const { slug } = match.params;
@@ -24,35 +24,29 @@ const CategoryUpdate = ({ history, match }) => {
         (state) => state.updateCategory
     );
 
-
-
     //au montage et demontage du component
     useEffect(() => {
         dispatch(getOneCategoryAction(slug));
-        return () => {
-            dispatch({ type: GETONE_CATEGORY_RESET });
-            setUpdateCategory("");
-        };
     }, []);
 
-        
-    
     //quand success est a true je met a jour mon state
     useEffect(() => {
         if (success) {
             setUpdateCategory(category.name);
         }
+    }, [success, category]);
+
+    useEffect(() => {
         if (successUpadte) {
-            toast.success("Updaded !");
+            dispatch({type: UPDATE_CATEGORY_RESTET})
             history.push("/admin/category");
-            dispatch({ type: UPDATE_CATEGORY_RESTET });
-            dispatch(getAllCategoryAction());
         }
-    }, [slug, history, successUpadte, dispatch,success]);
+    }, [successUpadte, history]);
 
     const onhandleSubmit = (e) => {
         e.preventDefault();
         dispatch(updateCategoryAction(slug, updateCategory));
+        toast.success("Updaded !");
     };
 
     const showCategoryForm = () => {
@@ -69,7 +63,7 @@ const CategoryUpdate = ({ history, match }) => {
                         onChange={(e) => setUpdateCategory(e.target.value)}
                     />
                     <button type="submit" className="btn btn-outline-primary">
-                        enoyer
+                        envoyer
                     </button>
                 </div>
             </form>
